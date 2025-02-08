@@ -2,179 +2,183 @@
 <html>
 
 <head>
-  <meta charset="utf-8" />
-
-  <title> traffic-simulation.de: Onramp</title>
-
-  <!-- specifications/appearance of  main webpage and sliders 
-(slider implementations DYN_WEB.* von sliders/js/dw_slider.js)-->
-
-  <link href="css/simulation_html5.css" rel="stylesheet" type="text/css" />
-
+<meta charset="utf-8"/>
+<title>Autonomous vehicle</title>
+<!-- <link href="css/simulation_html5.css" rel="stylesheet" type="text/css" /> -->
 </head>
 
-
 <body>
-  <h1> Autonomous vehicle simulation</h1>
+<h1>Autonomous Vehicle</h1>
 
-  <!-- outer nested table, first row spans both subtables -->
+<!-- Control Buttons -->
+<table width="100%" id="mainTable">
+<tr>
+<td colspan="2">
+    <button onclick="myStartFunction()">Resume</button>
+    <button onclick="myStopFunction()">Stop</button>
+    <button onclick="spawnAmbulance()">🚑 Add Ambulance</button>
+</td>
+</tr>
 
-  <table width="100%" id="mainTable"> <!-- id for responsive design-->
-    <tr>
-      <td colspan="2">
-        <button onclick="myStartFunction()">Resume</button>
-        <button onclick="myStopFunction()">Stop</button>
-        <button onclick="spawnAmbulance()">🚑Add ambulance</button>
-
-      </td>
-    </tr>
-
-    <tr>
-      <td>
-        <table>
-
-          <tr>
+<!-- Global Controls -->
+<tr>
+<td>
+    <table>
+        <tr>
             <td>Timewarp</td>
             <td>
-              <div id="track_timewarp">
-                <div id="slider_timewarp"></div>
-              </div>
+                <input type="range" id="slider_timewarp" min="0.1" max="20" step="0.1" value="8" oninput="updateTimewarp(this.value)">
             </td>
-            <td>
-              <div id="valueField_timewarp"></div>
-          </tr>
+            <td><span id="valueField_timewarp">8</span> times</td>
+        </tr>
 
-          <!--
- <tr>
-  <td>Scale</td>
-  <td> <div id="track_scale"> <div id="slider_scale"></div></div></td>
-  <td> <div id="valueField_scale"></div>
- </tr>
--->
-
-          <tr>
-            <td> Truck Fraction</td>
+        <tr>
+            <td>Truck Fraction</td>
             <td>
-              <div id="track_truckFrac">
-                <div id="slider_truckFrac"></div>
-              </div>
+                <input type="range" id="slider_truckFrac" min="0" max="0.5" step="0.01" value="0.04" oninput="updateTruckFrac(this.value)">
             </td>
-            <td>
-              <div id="valueField_truckFrac"></div>
-          </tr>
+            <td><span id="valueField_truckFrac">4</span>%</td>
+        </tr>
 
-          <tr>
-            <td> Inflow</td>
+        <tr>
+            <td>Inflow</td>
             <td>
-              <div id="track_qIn">
-                <div id="slider_qIn"></div>
-              </div>
+                <input type="range" id="slider_qIn" min="0" max="1.5" step="0.01" value="1.0" oninput="updateQIn(this.value)">
             </td>
-            <td>
-              <div id="valueField_qIn"></div>
-          </tr>
+            <td><span id="valueField_qIn">1000</span> veh/h</td>
+        </tr>
 
-          <tr>
-            <td> Onramp Flow</td>
+        <tr>
+            <td>Onramp Flow</td>
             <td>
-              <div id="track_qOn">
-                <div id="slider_qOn"></div>
-              </div>
+                <input type="range" id="slider_qOn" min="0" max="0.5" step="0.01" value="0.2" oninput="updateQOn(this.value)">
             </td>
+            <td><span id="valueField_qOn">200</span> veh/h</td>
+        </tr>
+    </table>
+</td>
+
+<!-- Model Parameters -->
+<td>
+    <table>
+        <tr>
+            <td>Desired Speed</td>
             <td>
-              <div id="valueField_qOn"></div>
-          </tr>
-
-        </table>
-      </td>
-
-      <!-- Table 2: sliders for model parameters -->
-
-      <td>
-        <table>
-
-          <tr>
-            <td> Desired Speed v</sub>0</sub> </td>
-            <td>
-              <div id="track_IDM_v0">
-                <div id="slider_IDM_v0"></div>
-              </div>
+                <input type="range" id="slider_IDM_v0" min="5" max="40" step="1" value="30" oninput="updateIDM_v0(this.value)">
             </td>
-            <td>
-              <div id="valueField_IDM_v0"></div>
-          </tr>
+            <td><span id="valueField_IDM_v0">30</span> km/h</td>
+        </tr>
 
-          <tr>
-            <td> Time Gap T</td>
+        <tr>
+            <td>Time Gap (T)</td>
             <td>
-              <div id="track_IDM_T">
-                <div id="slider_IDM_T"></div>
-              </div>
+                <input type="range" id="slider_IDM_T" min="0.6" max="3" step="0.1" value="1.5" oninput="updateIDM_T(this.value)">
             </td>
-            <td>
-              <div id="valueField_IDM_T"></div>
-          </tr>
+            <td><span id="valueField_IDM_T">1.5</span> s</td>
+        </tr>
 
-          <tr>
-            <td> Minimum Gap s</sub>0</sub> </td>
+        <tr>
+            <td>Min Gap (s0)</td>
             <td>
-              <div id="track_IDM_s0">
-                <div id="slider_IDM_s0"></div>
-              </div>
+                <input type="range" id="slider_IDM_s0" min="0.5" max="5" step="0.1" value="2" oninput="updateIDM_s0(this.value)">
             </td>
-            <td>
-              <div id="valueField_IDM_s0"></div>
-          </tr>
+            <td><span id="valueField_IDM_s0">2</span> m</td>
+        </tr>
 
-          <tr>
-            <td> Max Acceleration a</td>
+        <tr>
+            <td>Max Acceleration (a)</td>
             <td>
-              <div id="track_IDM_a">
-                <div id="slider_IDM_a"></div>
-              </div>
+                <input type="range" id="slider_IDM_a" min="0.3" max="3" step="0.1" value="0.3" oninput="updateIDM_a(this.value)">
             </td>
-            <td>
-              <div id="valueField_IDM_a"></div>
-          </tr>
+            <td><span id="valueField_IDM_a">0.3</span> m/s²</td>
+        </tr>
 
-          <tr>
-            <td> Comfort Decel b</td>
+        <tr>
+            <td>Comfort Deceleration (b)</td>
             <td>
-              <div id="track_IDM_b">
-                <div id="slider_IDM_b"></div>
-              </div>
+                <input type="range" id="slider_IDM_b" min="0.5" max="5" step="0.1" value="3" oninput="updateIDM_b(this.value)">
             </td>
-            <td>
-              <div id="valueField_IDM_b"></div>
-          </tr>
+            <td><span id="valueField_IDM_b">3</span> m/s²</td>
+        </tr>
+    </table>
+</td>
+</tr>
+</table>
 
-        </table>
-      </td> <!-- nested Table 2 -->
-
-    </tr>
-  </table> <!-- outer table -->
-
-
-  <canvas id="canvas_onramp" width="800" height="600">You are probably
-    using a very ancient web browser (or an Internet Explorer)
-    not supporting html5 canvas. Please switch to another browser for
-    running this simulation.
+<div class="card">
+  <canvas id="canvas_onramp" width="800" height="600">
+      Your browser does not support HTML5 canvas.
   </canvas>
+</div>
 
-  <!-- specific scripts; position after def of canvas! -->
+<style>
+  .card{
+    border:3px solid black
+  }
+</style>
 
-  <script src="js/dw_slider.js" type="text/javascript"></script>
-  <script src="js/canvasresize.js" type="text/javascript"></script>
+<!-- JavaScript Files -->
+<script src="js/dw_slider.js"></script>
+<script src="js/canvasresize.js"></script>
+<script src="js/onramp_gui.js"></script> 
+<script src="js/colormanip.js"></script>
+<script src="js/models.js"></script> 
+<script src="js/vehicle.js"></script>
+<script src="js/paths.js"></script>
+<script src="js/road.js"></script>
+<script src="js/onramp.js"></script> 
 
-  <script src="js/onramp_gui.js"></script>
-  <script src="js/colormanip.js"></script>
-  <script src="js/models.js"></script>
-  <script src="js/vehicle.js"></script>
-  <!--<script src="js/myMath.js"></script> -->
-  <script src="js/paths.js"></script>
-  <script src="js/road.js"></script>
-  <script src="js/onramp.js"></script>
+<!-- JavaScript Functions to Update Sliders -->
+<script>
+function updateTimewarp(value) {
+    timewarp = parseFloat(value);  // ✅ Update global variable
+    document.getElementById("valueField_timewarp").innerText = timewarp.toFixed(1) + " times";
+
+    // ✅ Recalculate simulation time step
+    dt = timewarp / fps;
+}
+
+
+function updateTruckFrac(value) {
+    document.getElementById("valueField_truckFrac").innerText = (value * 100).toFixed(0);
+    truckFrac = parseFloat(value);
+}
+
+function updateQIn(value) {
+    document.getElementById("valueField_qIn").innerText = Math.round(value * 3600);
+    qIn = parseFloat(value);
+}
+
+function updateQOn(value) {
+    document.getElementById("valueField_qOn").innerText = Math.round(value * 3600);
+    qOn = parseFloat(value);
+}
+
+function updateIDM_v0(value) {
+    document.getElementById("valueField_IDM_v0").innerText = value;
+    IDM_v0 = parseFloat(value);
+}
+
+function updateIDM_T(value) {
+    document.getElementById("valueField_IDM_T").innerText = value;
+    IDM_T = parseFloat(value);
+}
+
+function updateIDM_s0(value) {
+    document.getElementById("valueField_IDM_s0").innerText = value;
+    IDM_s0 = parseFloat(value);
+}
+
+function updateIDM_a(value) {
+    document.getElementById("valueField_IDM_a").innerText = value;
+    IDM_a = parseFloat(value);
+}
+
+function updateIDM_b(value) {
+    document.getElementById("valueField_IDM_b").innerText = value;
+    IDM_b = parseFloat(value);
+}
+</script>
 
 </body>
-
 </html>
