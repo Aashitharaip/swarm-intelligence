@@ -3,12 +3,69 @@
 
 <head>
 <meta charset="utf-8"/>
-<title>Autonomous vehicle</title>
-<!-- <link href="css/simulation_html5.css" rel="stylesheet" type="text/css" /> -->
+<title>Swarm Intelligence for Optimised Traffic Flow in Autonomous Vehicles</title>
+<style>
+    /* General Styling */
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+        color: white;
+        text-align: center;
+        padding: 20px;
+    }
+
+    /* Button Styling */
+    button {
+        background: linear-gradient(45deg, #4CAF50, #45a049);
+        border: none;
+        color: white;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0px 4px 10px rgba(0, 255, 0, 0.3);
+        margin: 10px;
+    }
+
+    button:hover {
+        background: linear-gradient(45deg, #45a049, #3e8e41);
+        box-shadow: 0px 4px 12px rgba(0, 255, 0, 0.6);
+        transform: scale(1.05);
+    }
+
+    /* Card Container */
+    .card {
+        border: 3px solid black;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 20px;
+        display: inline-block;
+    }
+
+    /* Table Styling */
+    table {
+        width: 80%;
+        margin: 0 auto;
+        background: rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    td {
+        padding: 10px;
+    }
+
+    input[type="range"] {
+        width: 100%;
+    }
+</style>
 </head>
 
 <body>
-<h1>Autonomous Vehicle</h1>
+<h1>Swarm Intelligence for Optimised Traffic Flow in Autonomous Vehicles</h1>
 
 <!-- Control Buttons -->
 <table width="100%" id="mainTable">
@@ -29,7 +86,7 @@
             <td>
                 <input type="range" id="slider_timewarp" min="0.1" max="20" step="0.1" value="8" oninput="updateTimewarp(this.value)">
             </td>
-            <td><span id="valueField_timewarp">8</span> times</td>
+            <td><span id="valueField_timewarp">8</span></td>
         </tr>
 
         <tr>
@@ -37,7 +94,7 @@
             <td>
                 <input type="range" id="slider_truckFrac" min="0" max="0.5" step="0.01" value="0.04" oninput="updateTruckFrac(this.value)">
             </td>
-            <td><span id="valueField_truckFrac">4</span>%</td>
+            <td><span id="valueField_truckFrac">4</span></td>
         </tr>
 
         <tr>
@@ -45,7 +102,7 @@
             <td>
                 <input type="range" id="slider_qIn" min="0" max="1.5" step="0.01" value="1.0" oninput="updateQIn(this.value)">
             </td>
-            <td><span id="valueField_qIn">1000</span> veh/h</td>
+            <td><span id="valueField_qIn">1000</span></td>
         </tr>
 
         <tr>
@@ -53,7 +110,7 @@
             <td>
                 <input type="range" id="slider_qOn" min="0" max="0.5" step="0.01" value="0.2" oninput="updateQOn(this.value)">
             </td>
-            <td><span id="valueField_qOn">200</span> veh/h</td>
+            <td><span id="valueField_qOn">200</span></td>
         </tr>
     </table>
 </td>
@@ -66,7 +123,7 @@
             <td>
                 <input type="range" id="slider_IDM_v0" min="5" max="40" step="1" value="30" oninput="updateIDM_v0(this.value)">
             </td>
-            <td><span id="valueField_IDM_v0">30</span> km/h</td>
+            <td><span id="valueField_IDM_v0">30</span></td>
         </tr>
 
         <tr>
@@ -74,7 +131,7 @@
             <td>
                 <input type="range" id="slider_IDM_T" min="0.6" max="3" step="0.1" value="1.5" oninput="updateIDM_T(this.value)">
             </td>
-            <td><span id="valueField_IDM_T">1.5</span> s</td>
+            <td><span id="valueField_IDM_T">1.5</span></td>
         </tr>
 
         <tr>
@@ -82,7 +139,7 @@
             <td>
                 <input type="range" id="slider_IDM_s0" min="0.5" max="5" step="0.1" value="2" oninput="updateIDM_s0(this.value)">
             </td>
-            <td><span id="valueField_IDM_s0">2</span> m</td>
+            <td><span id="valueField_IDM_s0">2</span></td>
         </tr>
 
         <tr>
@@ -90,7 +147,7 @@
             <td>
                 <input type="range" id="slider_IDM_a" min="0.3" max="3" step="0.1" value="0.3" oninput="updateIDM_a(this.value)">
             </td>
-            <td><span id="valueField_IDM_a">0.3</span> m/s²</td>
+            <td><span id="valueField_IDM_a">0.3</span></td>
         </tr>
 
         <tr>
@@ -98,24 +155,19 @@
             <td>
                 <input type="range" id="slider_IDM_b" min="0.5" max="5" step="0.1" value="3" oninput="updateIDM_b(this.value)">
             </td>
-            <td><span id="valueField_IDM_b">3</span> m/s²</td>
+            <td><span id="valueField_IDM_b">3</span></td>
         </tr>
     </table>
 </td>
 </tr>
 </table>
 
+<!-- Simulation Canvas -->
 <div class="card">
   <canvas id="canvas_onramp" width="800" height="600">
       Your browser does not support HTML5 canvas.
   </canvas>
 </div>
-
-<style>
-  .card{
-    border:3px solid black
-  }
-</style>
 
 <!-- JavaScript Files -->
 <script src="js/dw_slider.js"></script>
@@ -131,13 +183,10 @@
 <!-- JavaScript Functions to Update Sliders -->
 <script>
 function updateTimewarp(value) {
-    timewarp = parseFloat(value);  // ✅ Update global variable
+    timewarp = parseFloat(value);
     document.getElementById("valueField_timewarp").innerText = timewarp.toFixed(1) + " times";
-
-    // ✅ Recalculate simulation time step
     dt = timewarp / fps;
 }
-
 
 function updateTruckFrac(value) {
     document.getElementById("valueField_truckFrac").innerText = (value * 100).toFixed(0);
@@ -152,31 +201,6 @@ function updateQIn(value) {
 function updateQOn(value) {
     document.getElementById("valueField_qOn").innerText = Math.round(value * 3600);
     qOn = parseFloat(value);
-}
-
-function updateIDM_v0(value) {
-    document.getElementById("valueField_IDM_v0").innerText = value;
-    IDM_v0 = parseFloat(value);
-}
-
-function updateIDM_T(value) {
-    document.getElementById("valueField_IDM_T").innerText = value;
-    IDM_T = parseFloat(value);
-}
-
-function updateIDM_s0(value) {
-    document.getElementById("valueField_IDM_s0").innerText = value;
-    IDM_s0 = parseFloat(value);
-}
-
-function updateIDM_a(value) {
-    document.getElementById("valueField_IDM_a").innerText = value;
-    IDM_a = parseFloat(value);
-}
-
-function updateIDM_b(value) {
-    document.getElementById("valueField_IDM_b").innerText = value;
-    IDM_b = parseFloat(value);
 }
 </script>
 

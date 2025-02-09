@@ -15,7 +15,7 @@ var center_x; // defined in init() after value of width is known
 var center_y; // defined in init() after value of height is known
 
 
-var drawBackground=false; // if false, default unicolor background
+var drawBackground=true; // if false, default unicolor background
 var drawRoad=true; // if false, only vehicles are drawn
 
 var vmin=0; // min speed for speed colormap (drawn in red)
