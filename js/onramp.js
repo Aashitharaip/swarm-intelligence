@@ -101,7 +101,7 @@ var truckFracToleratedMismatch=0.2; // open system: need tolerance, otherwise su
 
 
 
-var car_srcFile='figs/blackCarCropped.gif';
+var car_srcFile='figs/carSmall2.png';
 var truck_srcFile='figs/truck1Small.png';
 var obstacle_srcFile='figs/obstacleImg.png';
 var road1lane_srcFile='figs/oneLaneRoadRealisticCropped.png';
@@ -167,6 +167,18 @@ var LCModelObstacle=new MOBIL(MOBIL_bSafe, MOBIL_bSafe,1000,MOBIL_bBiasRight_car
 virtualStandingVeh.longModel=longModelObstacle;
 virtualStandingVeh.LCModel=LCModelObstacle;
 onramp.veh.unshift(virtualStandingVeh);
+
+// Adding a obstacle in between 
+var virtualStandingVeh=new vehicle(5, laneWidth, 300, 1, 0, "obstacle");
+var longModelObstacle=new IDM(0,IDM_T,IDM_s0,0,IDM_b);
+var LCModelObstacle=new MOBIL(MOBIL_bSafe, MOBIL_bSafe,1000, MOBIL_bBiasRight_car);
+virtualStandingVeh.longModel=longModelObstacle;
+virtualStandingVeh.LCModel=LCModelObstacle;
+mainroad.veh.unshift(virtualStandingVeh);
+
+
+
+
 if(false){
         console.log("\nonramp.nveh="+onramp.nveh);
 	for(var i=0; i<onramp.veh.length; i++){
