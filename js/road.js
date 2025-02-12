@@ -499,11 +499,7 @@ road.prototype.mergeDiverge = function (newRoad, offset, uStart, uEnd, isMerge, 
 
 	if (success) {// do the actual merging 
 
-		//originVehicles[iMerge]=veh[iMerge+this.iOffset] 
-
 		var iOrig = iMerge + this.iOffset;
-	
-
 		var changingVeh = this.veh[iOrig]; //originVehicles[iMerge];
 		var vOld = (toRight) ? targetLane - 1 : targetLane + 1; // rel. to NEW road
 		changingVeh.u += offset;
