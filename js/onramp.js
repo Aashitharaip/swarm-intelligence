@@ -102,7 +102,7 @@ var truckFracToleratedMismatch=0.2; // open system: need tolerance, otherwise su
 
 
 var car_srcFile='figs/carSmall2.png';
-var truck_srcFile='figs/truck1Small.png';
+var truck_srcFile='figs/truck.png';
 var obstacle_srcFile='figs/obstacleImg.png';
 var road1lane_srcFile='figs/oneLaneRoadRealisticCropped.png';
 var road2lanes_srcFile='figs/twoLanesRoadRealisticCropped.png';
@@ -161,7 +161,7 @@ onramp.LCModelMandatoryLeft=LCModelMandatoryLeft; //unique mandat LC model
 // add standing virtual vehicle at the end of onramp (1 lane)
 // prepending=unshift (strange name)
 
-var virtualStandingVeh=new vehicle(2, laneWidth, rampLen-0.6*taperLen, 0, 0, "obstacle");
+var virtualStandingVeh=new Vehicle(2, laneWidth, rampLen-0.6*taperLen, 0, 0, "obstacle");
 var longModelObstacle=new IDM(0,IDM_T,IDM_s0,0,IDM_b);
 var LCModelObstacle=new MOBIL(MOBIL_bSafe, MOBIL_bSafe,1000,MOBIL_bBiasRight_car);
 virtualStandingVeh.longModel=longModelObstacle;
@@ -169,7 +169,7 @@ virtualStandingVeh.LCModel=LCModelObstacle;
 onramp.veh.unshift(virtualStandingVeh);
 
 // Adding a obstacle in between 
-var virtualStandingVeh=new vehicle(5, laneWidth, 300, 1, 0, "obstacle");
+var virtualStandingVeh=new Vehicle(5, laneWidth, 300, 1, 0, "obstacle");
 var longModelObstacle=new IDM(0,IDM_T,IDM_s0,0,IDM_b);
 var LCModelObstacle=new MOBIL(MOBIL_bSafe, MOBIL_bSafe,1000, MOBIL_bBiasRight_car);
 virtualStandingVeh.longModel=longModelObstacle;
@@ -238,6 +238,7 @@ function updateU(){
     mainroad.updateSpeedPositions();
     mainroad.updateBCdown();
     mainroad.updateBCup(qIn,dt); // argument=total inflow
+    // mainroad.reactToAmbulance()
 
     if(true){
 	for (var i=0; i<mainroad.nveh; i++){
@@ -259,26 +260,7 @@ function updateU(){
     onramp.mergeDiverge(mainroad,mainRampOffset,
 			rampLen-mergeLen,rampLen,true,false);
  
-    //logging
-
-    if(false){
-        console.log("\nafter updateU: itime="+itime+" mainroad.nveh="+mainroad.nveh);
-	for(var i=0; i<mainroad.veh.length; i++){
-	    console.log("i="+i+" mainroad.veh[i].u="+mainroad.veh[i].u
-			+" mainroad.veh[i].v="+mainroad.veh[i].v
-			+" mainroad.veh[i].lane="+mainroad.veh[i].lane
-			+" mainroad.veh[i].laneOld="+mainroad.veh[i].laneOld);
-	}
-        console.log("\nonramp.nveh="+onramp.nveh);
-	for(var i=0; i<onramp.veh.length; i++){
-	    console.log("i="+i
-			+" onramp.veh[i].type="+onramp.veh[i].type
-			+" onramp.veh[i].u="+onramp.veh[i].u
-			+" onramp.veh[i].v="+onramp.veh[i].v
-			+" onramp.veh[i].speed="+onramp.veh[i].speed);
-	}
-	console.log("\n");
-    }
+ 
 
 }//updateU
 
@@ -361,7 +343,7 @@ function drawU() {
  
 
 function init() {
-    canvas = document.getElementById("canvas_onramp"); 
+    canvas = document.getElementById("canvas"); 
     ctx = canvas.getContext("2d");
  
     background = new Image();
@@ -411,3 +393,7 @@ function main_loop() {
  
  var myRun=init(); 
 
+
+function spawnAmbulance() {
+    mainroad.callAmbulance(0, 0, 20)
+}
